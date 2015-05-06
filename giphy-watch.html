@@ -1,0 +1,62 @@
+<html>
+	<head>
+
+		<title>Giphy Watch!</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<style>
+			html,body{
+				padding:0;
+				margin:0;
+				text-align:center;
+
+			}
+			#query{
+
+			}
+			#gifs{
+
+			}
+			#search{
+				margin:5px;
+			}
+			iframe{
+				width:500px;
+				height:500px;
+			}
+			h1{
+				font-size:20px;
+				font-family:helvetica,arial;
+				padding:0;
+				margin:5px;
+			}
+		</style>
+
+		<script>
+			$(document).ready(function(e){
+				$("#search_giphy").submit(function(e){
+					e.preventDefault();
+					var q = encodeURIComponent($("#query").val());
+					var xhr = $.get("http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=5&q="+q);
+					xhr.done(function(data) { 
+						console.log("success got data", data); 
+						$("#gifs").html('');
+						$.each(data.data,function(i,obj){
+							$("#gifs").append("<iframe src="+obj.embed_url+"/>");
+						});
+					});
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<h1>GIPHWATCH</h1>
+		<form id="search_giphy">
+			<input id="query" /><br/>
+			<input type="submit" id="search" />
+		</form>
+		<div id="gifs">
+		</div>
+
+	</body>
+</html>
