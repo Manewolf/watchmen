@@ -36,13 +36,16 @@
 			$(document).ready(function(e){
 				$("#search_giphy").submit(function(e){
 					e.preventDefault();
+					var rand = Math.floor(Math.random()*10);
 					var q = encodeURIComponent($("#query").val());
-					var xhr = $.get("http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=5&q="+q);
+					var xhr = $.get("http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=3&q="+q);
 					xhr.done(function(data) { 
 						console.log("success got data", data); 
 						$("#gifs").html('');
 						$.each(data.data,function(i,obj){
-							$("#gifs").append("<iframe src="+obj.embed_url+"/>");
+							if(rand == i){
+							$("#gifs").append("<iframe src="+obj.embed_url+"/>");}
+						
 						});
 					});
 				})
