@@ -1,20 +1,31 @@
 <html>
 	<head>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 		<title>Giphy Watch!</title>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.5/slick.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.5/slick-theme.min.css"/>
+      
+      
+      
+				
 		<style>
 			html,body{
 				padding:0;
 				margin:0;
 				text-align:center;
+              background:#ddd;
 
 			}
 			#query{
 
 			}
 			#gifs{
+			  position:relative;
+  height:400px;
+  width:400px;
+  margin-left:30px;
 
 			}
 			#search{
@@ -30,36 +41,51 @@
 				padding:0;
 				margin:5px;
 			}
+          .mask{
+       position:absolute;
+       top:0;
+       bottom:0;
+       right:0;
+       left:0;
+       background:rgba(255,0,0,0.1);
+  
+              }
 		</style>
 
-		<script>
-			$(document).ready(function(e){
-				$("#search_giphy").submit(function(e){
-					e.preventDefault();
-					var rand = Math.floor(Math.random()*10);
-					var q = encodeURIComponent($("#query").val());
-					var xhr = $.get("http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=3&q="+q);
-					xhr.done(function(data) { 
-						console.log("success got data", data); 
-						$("#gifs").html('');
-						$.each(data.data,function(i,obj){
-							if(rand == i){
-							$("#gifs").append("<iframe src="+obj.embed_url+"/>");}
-						
-						});
-					});
-				})
-			});
-		</script>
 	</head>
 	<body>
 		<h1>GIPHWATCH</h1>
 		<form id="search_giphy">
-			<input id="query" /><br/>
-			<input type="submit" id="search" />
+			<input id="query"  value="banana" /><br/>
+			<input type="submit" id="search"/>
 		</form>
 		<div id="gifs">
 		</div>
+      
+   
+      <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.5/slick.js"></script>
+		<script>
+			$(document).ready(function(e){
+              
+				$("#search_giphy").submit(function(e){
+					e.preventDefault();
+					var rand = Math.floor(Math.random()*15);
+					var q = encodeURIComponent($("#query").val());
+					var xhr = $.get("http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=3&q="+q);
+					xhr.done(function(data) { 
+                      $("#gifs").empty();
+						$.each(data.data,function(i,obj){
+							 //if(rand ==i){
+								$("#gifs").append("<div><div class='mask'></div><iframe src="+obj.embed_url+"/></div>");
+						});
+						$('#gifs').slick();
+						// initialize slick 
+
+					});
+				})
+			});
+		</script>
 
 	</body>
 </html>
